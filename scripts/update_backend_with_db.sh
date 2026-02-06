@@ -21,8 +21,8 @@ app = FastAPI()
 # Database Config
 DB_HOST = "localhost"
 DB_NAME = "app_db"
-DB_USER = "app_user"
-DB_PASS = "secure_password"
+DB_USER = "admin"
+DB_PASS = "admin@123"
 
 def get_db_connection():
     conn = psycopg2.connect(
