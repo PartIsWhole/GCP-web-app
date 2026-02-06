@@ -15,7 +15,7 @@ jobs:
           username: ${{ secrets.GCP_USERNAME }}
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           port: ${{ secrets.GCP_PORT }}
-          source: "scripts/*"
+          source: "scripts/*,backend,frontend"
           target: "~/"
 
       - name: Execute Setup Script
@@ -28,18 +28,12 @@ jobs:
           script_stop: true
           script: |
             chmod +x ~/scripts/setup_vm.sh
-            chmod +x ~/scripts/create_frontend.sh
             chmod +x ~/scripts/deploy_frontend.sh
-            chmod +x ~/scripts/create_backend.sh
             chmod +x ~/scripts/deploy_backend.sh
             chmod +x ~/scripts/setup_db.sh
-            chmod +x ~/scripts/update_backend_with_db.sh
             
             # Run scripts in order
             ~/scripts/setup_vm.sh
-            ~/scripts/create_frontend.sh
             ~/scripts/deploy_frontend.sh
-            ~/scripts/create_backend.sh
             ~/scripts/deploy_backend.sh
             ~/scripts/setup_db.sh
-            ~/scripts/update_backend_with_db.sh
