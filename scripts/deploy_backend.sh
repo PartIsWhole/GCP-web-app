@@ -60,8 +60,8 @@ server {
         try_files \$uri \$uri/ /index.html;
     }
 
-    # Proxy API requests to FastAPI
-    location /api {
+    # Proxy API requests and Swagger docs to FastAPI
+    location ~ ^/(api|docs|openapi.json) {
         proxy_pass http://127.0.0.1:8000;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
