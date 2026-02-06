@@ -8,7 +8,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Copy Setup Script and Execute
+      - name: Copy Setup Script to VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.GCP_HOST }}
+          username: ${{ secrets.GCP_USERNAME }}
+          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.GCP_PORT }}
+          source: "scripts/setup_vm.sh"
+          target: "~/"
+
+      - name: Execute Setup Script
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.GCP_HOST }}
@@ -17,38 +27,5 @@ jobs:
           port: ${{ secrets.GCP_PORT }}
           script_stop: true
           script: |
-            # Create a directory for scripts if it doesn't exist
-            mkdir -p ~/scripts
-            
-            # We will write the script content directly here or you can use scp-action to copy the file.
-            # For simplicity, we are pasting the commands to download/run or running inline.
-            # However, since the file is in your repo, let's assume you want to pull the repo on the VM or just run the commands.
-            
-            # Approach: Clone/Pull repo or just run the commands. 
-            # Here is a direct execution method for the setup:
-            
-            echo "Starting remote setup..."
-            
-            # Update & Install Git
-            sudo apt-get update
-            sudo apt-get install -y git
-            
-            # Clone your repo (Public) or just create the script file. 
-            # Assuming you want to paste the script content into a file on the VM:
-            
-            cat << 'EOF' > ~/scripts/setup_vm.sh
-            #!/bin/bash
-            set -e
-            export DEBIAN_FRONTEND=noninteractive
-            sudo apt-get update && sudo apt-get upgrade -y
-            sudo apt-get install -y curl git unzip build-essential software-properties-common libpq-dev
-            sudo apt-get install -y python3 python3-pip python3-venv python3-dev
-            if ! command -v node &> /dev/null; then
-                curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-                sudo apt-get install -y nodejs
-            fi
-            sudo apt-get install -y postgresql postgresql-contrib nginx supervisor
-            EOF
-            
             chmod +x ~/scripts/setup_vm.sh
             ~/scripts/setup_vm.sh
