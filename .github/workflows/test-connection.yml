@@ -30,8 +30,12 @@ jobs:
             chmod +x ~/scripts/setup_vm.sh
             chmod +x ~/scripts/create_frontend.sh
             chmod +x ~/scripts/deploy_frontend.sh
+            chmod +x ~/scripts/create_backend.sh
+            chmod +x ~/scripts/deploy_backend.sh
             
             # Run scripts in order
             ~/scripts/setup_vm.sh
             ~/scripts/create_frontend.sh
             ~/scripts/deploy_frontend.sh
+            ~/scripts/create_backend.sh
+            ~/scripts/deploy_backend.sh
